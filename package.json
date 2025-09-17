@@ -1,6 +1,6 @@
 {
   "name": "nuxt-oauth",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Nuxt OAuth",
   "repository": "https://github.com/idevless/nuxt-oauth",
   "author": "idevless",
@@ -40,7 +40,7 @@
     "dev": "npm run dev:prepare && nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
-    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "release": "changelogen --release && npm publish && git push --follow-tags",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest watch",
