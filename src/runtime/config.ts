@@ -1,5 +1,6 @@
 import { z } from 'zod'
-import { providerDefinitions } from './providers'
+import { providerDefinitions } from './server/providers'
+
 export const providerConfigSchema = z.object({
   clientId: z.string(),
   clientSecret: z.string(),

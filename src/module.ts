@@ -1,6 +1,6 @@
 import { defineNuxtModule, addServerImports, createResolver } from '@nuxt/kit'
 import { moduleRuntimeConfigSchema } from './runtime/config'
-import type { z } from 'zod'
+import { z } from 'zod'
 import type { PartialDeep } from 'type-fest'
 
 declare module 'nuxt/schema' {
@@ -21,11 +21,11 @@ export default defineNuxtModule<ModuleOptions>({
     const resolver = createResolver(import.meta.url)
     addServerImports([
       {
-        from: resolver.resolve('runtime'),
+        from: resolver.resolve('runtime/server/handlers'),
         name: 'defineCallbackEventHandler'
       },
       {
-        from: resolver.resolve('runtime'),
+        from: resolver.resolve('runtime/server/handlers'),
         name: 'defineGatewayEventHandler'
       }
     ])

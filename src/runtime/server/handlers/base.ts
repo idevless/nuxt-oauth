@@ -8,7 +8,7 @@ import {
 } from 'h3'
 import { z } from 'zod'
 import { useRuntimeConfig } from '#imports'
-import { moduleRuntimeConfigSchema, providerConfigSchema } from '../config'
+import { moduleRuntimeConfigSchema, providerConfigSchema } from '../../config'
 import { providerDefinitions } from '../providers'
 import { withQuery } from 'ufo'
 
