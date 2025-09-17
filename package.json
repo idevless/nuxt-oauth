@@ -10,7 +10,8 @@
   "keywords": [
     "nuxt",
     "oauth",
-    "nuxt-oauth"
+    "nuxt-oauth",
+    "nuxt-module"
   ],
   "homepage": "https://github.com/idevless/nuxt-oauth",
   "bugs": {
@@ -23,6 +24,10 @@
   "type": "module",
   "publishConfig": {
     "access": "public"
+  },
+  "nuxt": {
+    "name": "@idevless/nuxt-auth",
+    "configKey": "oauth"
   },
   "exports": {
     ".": {

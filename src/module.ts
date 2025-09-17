@@ -13,7 +13,7 @@ export interface ModuleOptions {}
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: '@idevless/nuxt-oauth',
+    name: '@idevless/nuxt-auth',
     configKey: 'oauth'
   },
   defaults: {},
