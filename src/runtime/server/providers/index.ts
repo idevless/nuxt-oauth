@@ -1,7 +1,9 @@
 import { githubProviderDefinition } from './github'
 import { feishuProviderDefinition } from './feishu'
+import { discordProviderDefinition } from './discord'
 
 export const providerDefinitions = {
   github: githubProviderDefinition,
-  feishu: feishuProviderDefinition
+  feishu: feishuProviderDefinition,
+  discord: discordProviderDefinition
 }
