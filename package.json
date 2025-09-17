@@ -1,0 +1,71 @@
+{
+  "name": "nuxt-oauth",
+  "version": "1.0.0",
+  "description": "Nuxt OAuth",
+  "repository": "https://github.com/idevless/nuxt-oauth",
+  "author": "idevless",
+  "keywords": [
+    "nuxt",
+    "oauth",
+    "nuxt-oauth"
+  ],
+  "homepage": "https://github.com/idevless/nuxt-oauth",
+  "bugs": {
+    "url": "https://github.com/idevless/nuxt-oauth/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.mts",
+      "import": "./dist/module.mjs"
+    }
+  },
+  "main": "./dist/module.mjs",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/types.d.mts"
+      ]
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "nuxt-module-build build",
+    "dev": "npm run dev:prepare && nuxi dev playground",
+    "dev:build": "nuxi build playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "test:types": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@nuxt/kit": "^4.1.1",
+    "camelcase": "^8.0.0",
+    "zod": "^4.1.8"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "^2.6.3",
+    "@nuxt/eslint-config": "^1.9.0",
+    "@nuxt/module-builder": "^1.0.2",
+    "@nuxt/schema": "^4.1.1",
+    "@nuxt/test-utils": "^3.19.2",
+    "@nuxt/ui": "^4.0.0-alpha.1",
+    "@types/node": "latest",
+    "changelogen": "^0.6.2",
+    "eslint": "^9.35.0",
+    "nuxt": "^4.1.1",
+    "type-fest": "^5.0.0",
+    "typescript": "~5.9.2",
+    "vitest": "^3.2.4",
+    "vue-tsc": "^3.0.6"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+}
