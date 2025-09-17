@@ -15,7 +15,13 @@
 ## 📦 安装
 
 ```bash
+# 使用 Nuxi 添加模块（推荐）
 npx nuxi module add @idevless/nuxt-oauth
+
+# 或者手动安装
+npm install @idevless/nuxt-oauth
+# yarn add @idevless/nuxt-oauth
+# pnpm add @idevless/nuxt-oauth
 ```
 
 ## 🚀 快速开始
@@ -25,7 +31,7 @@ npx nuxi module add @idevless/nuxt-oauth
 ```typescript
 // nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['nuxt-oauth'],
+  modules: ['@idevless/nuxt-oauth'],
   runtimeConfig: {
     oauth: {
       enableState: true, // 启用 CSRF 保护
@@ -342,9 +348,9 @@ npm run test:watch
 
 <!-- Badges -->
 
-[npm-version-src]: https://img.shields.io/npm/v/nuxt-oauth/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
-[npm-version-href]: https://npmjs.com/package/nuxt-oauth
-[npm-downloads-src]: https://img.shields.io/npm/dm/nuxt-oauth.svg?style=flat&colorA=18181B&colorB=28CF8D
-[npm-downloads-href]: https://npmjs.com/package/nuxt-oauth
-[license-src]: https://img.shields.io/npm/l/nuxt-oauth.svg?style=flat&colorA=18181B&colorB=28CF8D
-[license-href]: https://npmjs.com/package/nuxt-oauth
+[npm-version-src]: https://img.shields.io/npm/v/@idevless/nuxt-oauth/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
+[npm-version-href]: https://npmjs.com/package/@idevless/nuxt-oauth
+[npm-downloads-src]: https://img.shields.io/npm/dm/@idevless/nuxt-oauth.svg?style=flat&colorA=18181B&colorB=28CF8D
+[npm-downloads-href]: https://npmjs.com/package/@idevless/nuxt-oauth
+[license-src]: https://img.shields.io/npm/l/@idevless/nuxt-oauth.svg?style=flat&colorA=18181B&colorB=28CF8D
+[license-href]: https://npmjs.com/package/@idevless/nuxt-oauth

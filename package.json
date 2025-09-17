@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-oauth",
+  "name": "@idevless/nuxt-oauth",
   "version": "1.0.1",
   "description": "Nuxt OAuth",
   "repository": "https://github.com/idevless/nuxt-oauth",
@@ -36,7 +36,7 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "nuxt-module-build build",
+    "prepack": "NODE_OPTIONS='--max-old-space-size=4096' nuxt-module-build build",
     "dev": "npm run dev:prepare && nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
