@@ -1,5 +1,5 @@
 {
-  "name": "@idevless/nuxt-auth",
+  "name": "@idevless/nuxt-oauth",
   "version": "1.0.4",
   "description": "Nuxt OAuth",
   "repository": {
