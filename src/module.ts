@@ -1,11 +1,12 @@
-import { defineNuxtModule, addServerImports, createResolver } from '@nuxt/kit'
-import { moduleRuntimeConfigSchema } from './runtime/config'
+import { defineNuxtModule, addServerImportsDir, createResolver } from '@nuxt/kit'
 import { z } from 'zod'
+import { moduleOptionsSchema } from './runtime/shared/schemas'
 import type { PartialDeep } from 'type-fest'
+import { defu } from 'defu'
 
 declare module 'nuxt/schema' {
   interface RuntimeConfig {
-    oauth?: PartialDeep<z.input<typeof moduleRuntimeConfigSchema>>
+    oauth?: PartialDeep<z.input<typeof moduleOptionsSchema>>
   }
 }
 
@@ -19,15 +20,9 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {},
   setup(_options, _nuxt) {
     const resolver = createResolver(import.meta.url)
-    addServerImports([
-      {
-        from: resolver.resolve('runtime/server/handlers'),
-        name: 'defineCallbackEventHandler'
-      },
-      {
-        from: resolver.resolve('runtime/server/handlers'),
-        name: 'defineGatewayEventHandler'
-      }
-    ])
+    addServerImportsDir(resolver.resolve('./runtime/server/composables'))
+    _nuxt.options.runtimeConfig.oauth = defu(_nuxt.options.runtimeConfig.oauth, {
+      credentials: {}
+    })
   }
 })
