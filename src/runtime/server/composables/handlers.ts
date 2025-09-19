@@ -37,14 +37,15 @@ export function useOAuthRedirectUri(
     maxAge: 600,
     path: '/'
   })
-  const { authorizeEndpoint } = providerConfig[providerName]
+  const { authorizeEndpoint, extraAuthorizeParams } = providerConfig[providerName]
   const config = useRuntimeConfig(event).oauth as z.infer<typeof moduleOptionsSchema>
   return {
     authorizeUrl: withQuery(authorizeEndpoint, {
       client_id: clientId ?? config.credentials[providerName].clientId,
       redirect_uri: `${origin}${callbackPath}/${providerName}`,
       scope: scopes?.join(' ') ?? config.credentials[providerName].scopes?.join(' ') ?? '',
-      state: state
+      state: state,
+      ...extraAuthorizeParams
     }),
     state
   }

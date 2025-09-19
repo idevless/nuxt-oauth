@@ -12,6 +12,9 @@ export default {
   },
   discord: {
     authorizeEndpoint: 'https://discord.com/api/oauth2/authorize',
+    extraAuthorizeParams: {
+      response_type: 'code'
+    },
     tokenEndpoint: 'https://discord.com/api/oauth2/token'
   }
 } as Record<
@@ -19,5 +22,6 @@ export default {
   {
     authorizeEndpoint: string
     tokenEndpoint: string
+    extraAuthorizeParams?: Record<string, string>
   }
 >
