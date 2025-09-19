@@ -1,16 +1,31 @@
 import { defineNuxtModule, addServerImportsDir, createResolver } from '@nuxt/kit'
-import { z } from 'zod'
-import { moduleOptionsSchema } from './runtime/shared/schemas'
-import type { PartialDeep } from 'type-fest'
 import { defu } from 'defu'
+
+export interface ModuleOptions {}
 
 declare module 'nuxt/schema' {
   interface RuntimeConfig {
-    oauth?: PartialDeep<z.input<typeof moduleOptionsSchema>>
+    oauth?: {
+      providers?: Record<
+        'feishu' | 'discord' | 'github' | 'google' | string,
+        {
+          clientId?: string
+          clientSecret?: string
+          scopes?: string[]
+          [key: string]: any
+        }
+      >
+    }
   }
 }
 
-export interface ModuleOptions {}
+function resolveProviderConfigFromEnvironmentVariables(providerName: string) {
+  return {
+    clientId: process.env[`OAUTH_${providerName.toUpperCase()}_CLIENT_ID`],
+    clientSecret: process.env[`OAUTH_${providerName.toUpperCase()}_CLIENT_SECRET`],
+    scopes: process.env[`OAUTH_${providerName.toUpperCase()}_SCOPES`]?.split(',') || []
+  }
+}
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -21,8 +36,18 @@ export default defineNuxtModule<ModuleOptions>({
   setup(_options, _nuxt) {
     const resolver = createResolver(import.meta.url)
     addServerImportsDir(resolver.resolve('./runtime/server/composables'))
-    _nuxt.options.runtimeConfig.oauth = defu(_nuxt.options.runtimeConfig.oauth, {
-      credentials: {}
-    })
+    const envProviders = {} as Record<string, any>
+    for (const providerName of ['discord', 'feishu', 'github', 'google']) {
+      envProviders[providerName] = resolveProviderConfigFromEnvironmentVariables(providerName)
+    }
+    _nuxt.options.runtimeConfig.oauth = defu(
+      _nuxt.options.runtimeConfig.oauth,
+      {
+        providers: envProviders
+      },
+      {
+        providers: {}
+      }
+    )
   }
 })

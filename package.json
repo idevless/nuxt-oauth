@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "^4.1.1",
+    "undici": "^7.16.0",
     "zod": "^4.1.9"
   },
   "devDependencies": {
