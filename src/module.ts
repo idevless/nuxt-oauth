@@ -1,21 +1,19 @@
 import { defineNuxtModule, addServerImportsDir, createResolver } from '@nuxt/kit'
 import { defu } from 'defu'
+import { z } from 'zod'
+import type {
+  TProviderBasicConfigInput,
+  TSupportedProviderNames,
+  TOAuthConfigInput
+} from './runtime/base'
 
 export interface ModuleOptions {}
 
 declare module 'nuxt/schema' {
   interface RuntimeConfig {
     oauth?: {
-      providers?: Record<
-        'feishu' | 'discord' | 'github' | 'google' | string,
-        {
-          clientId?: string
-          clientSecret?: string
-          scopes?: string[]
-          [key: string]: any
-        }
-      >
-    }
+      providers?: Record<TSupportedProviderNames | string, TProviderBasicConfigInput>
+    } & TOAuthConfigInput
   }
 }
 
@@ -35,19 +33,23 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {},
   setup(_options, _nuxt) {
     const resolver = createResolver(import.meta.url)
-    addServerImportsDir(resolver.resolve('./runtime/server/composables'))
+    addServerImportsDir(resolver.resolve('./runtime/handlers'))
     const envProviders = {} as Record<string, any>
     for (const providerName of ['discord', 'feishu', 'github', 'google']) {
       envProviders[providerName] = resolveProviderConfigFromEnvironmentVariables(providerName)
     }
     _nuxt.options.runtimeConfig.oauth = defu(
-      _nuxt.options.runtimeConfig.oauth,
+      _nuxt.options.runtimeConfig.oauth ?? {
+        providers: {}
+      },
       {
         providers: envProviders
       },
       {
-        providers: {}
-      }
+        callbackPath: '/',
+        proxy: undefined,
+        csrf: 'auto'
+      } as TOAuthConfigInput
     )
   }
 })

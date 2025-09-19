@@ -4,11 +4,14 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   runtimeConfig: {
     oauth: {
+      proxy: 'http://localhost:10808',
       providers: {
         github: {
-          clientId: '',
-          clientSecret: '',
-          scopes: []
+          enabledProxy: true
+        },
+        discord: {
+          enabledProxy: true,
+          scopes: ['identify', 'email']
         }
       }
     }
