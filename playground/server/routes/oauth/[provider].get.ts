@@ -1,1 +1,1 @@
-export default defineOAuthGatewayHandler()
+export default defineOAuthGatewayHandler({ providerNameFrom: 'route-param' })

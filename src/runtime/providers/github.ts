@@ -1,27 +1,29 @@
-import { type IOAuthProvider, providerBasicTokenSchema } from '../base'
+import { type IOAuthProvider, providerBasicTokenSchema } from '../cores'
 
 export const githubProvider: IOAuthProvider = {
-  authorizeEndpoint: 'https://github.com/login/oauth/authorize',
-  getAuthorizeQueryParams: ({ clientId, redirectUri, scopes, state }) => ({
-    client_id: clientId,
-    redirect_uri: redirectUri,
-    scope: scopes?.join(' '),
-    state: state
+  authorizeConstructor: ({ config: { clientId, scopes }, redirectUri, state }) => ({
+    endpoint: 'https://github.com/login/oauth/authorize',
+    params: {
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      scope: scopes?.join(' '),
+      state: state
+    }
   }),
-  getToken: async (fetchClient, props) => {
-    const res = await fetchClient('https://github.com/login/oauth/access_token', {
+  getToken: async ({ config: { clientId, clientSecret }, code, redirectUri }, fetchOptions) => {
+    return await $fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
       body: {
-        client_id: props.clientId,
-        client_secret: props.clientSecret,
-        code: props.code,
-        redirect_uri: props.redirectUri
+        client_id: clientId,
+        client_secret: clientSecret,
+        code: code,
+        redirect_uri: redirectUri
       },
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json'
-      }
+      },
+      ...fetchOptions
     })
-    return providerBasicTokenSchema.parse(res)
   }
 }

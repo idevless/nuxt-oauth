@@ -1,16 +1,19 @@
 export default defineNuxtConfig({
-  modules: ['../src/module'],
+  modules: ['../src/module', '@nuxt/ui'],
   compatibilityDate: '2025-09-15',
   devtools: { enabled: true },
+  ui: {
+    fonts: false
+  },
+  css: ['~/assets/css/main.css'],
   runtimeConfig: {
     oauth: {
       proxy: 'http://localhost:10808',
       providers: {
         github: {
-          enabledProxy: true
+          scopes: ['user:email']
         },
         discord: {
-          enabledProxy: true,
           scopes: ['identify', 'email']
         }
       }

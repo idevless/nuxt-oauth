@@ -1,29 +1,29 @@
-import { type IOAuthProvider, providerBasicTokenSchema } from '../base'
+import { type IOAuthProvider, providerBasicTokenSchema } from '../cores'
 
 export const discordProvider: IOAuthProvider = {
-  authorizeEndpoint: 'https://discord.com/oauth2/authorize',
-  getAuthorizeQueryParams: ({ clientId, redirectUri, scopes, state }) => ({
-    client_id: clientId,
-    redirect_uri: redirectUri,
-    scope: scopes?.join(' '),
-    state: state,
-    response_type: 'code'
+  authorizeConstructor: ({ config: { clientId, scopes }, redirectUri, state }) => ({
+    endpoint: 'https://discord.com/oauth2/authorize',
+    params: {
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      scope: scopes?.join(' '),
+      state: state,
+      response_type: 'code'
+    }
   }),
-  getToken: async (fetchClient, props) => {
-    const res = await fetchClient('https://discord.com/api/oauth2/token', {
+  getToken: async ({ config: { clientId, clientSecret }, code, redirectUri }, fetchOptions) => {
+    return await $fetch('https://discord.com/api/oauth2/token', {
       method: 'POST',
       body: new URLSearchParams({
-        code: props.code,
-        redirect_uri: props.redirectUri,
+        code: code,
+        redirect_uri: redirectUri,
         grant_type: 'authorization_code'
       }),
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${Buffer.from(`${props.clientId}:${props.clientSecret}`).toString(
-          'base64'
-        )}`
-      }
+        Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`
+      },
+      ...fetchOptions
     })
-    return providerBasicTokenSchema.parse(res)
   }
 }

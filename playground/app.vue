@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="space-x-4">
     <a target="_parent" href="/oauth/feishu">Feishu</a>
     <a target="_parent" href="/oauth/github">Github</a>
     <a target="_parent" href="/oauth/discord">Discord</a>

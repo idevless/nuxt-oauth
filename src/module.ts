@@ -1,26 +1,21 @@
 import { defineNuxtModule, addServerImportsDir, createResolver } from '@nuxt/kit'
 import { defu } from 'defu'
-import { z } from 'zod'
-import type {
-  TProviderBasicConfigInput,
-  TSupportedProviderNames,
-  TOAuthConfigInput
-} from './runtime/base'
+import type { TOAuthConfigInput, TProviderConfigInput } from './runtime/cores'
 
 export interface ModuleOptions {}
 
 declare module 'nuxt/schema' {
   interface RuntimeConfig {
     oauth?: {
-      providers?: Record<TSupportedProviderNames | string, TProviderBasicConfigInput>
+      providers?: Record<string, TProviderConfigInput>
     } & TOAuthConfigInput
   }
 }
 
 function resolveProviderConfigFromEnvironmentVariables(providerName: string) {
   return {
-    clientId: process.env[`OAUTH_${providerName.toUpperCase()}_CLIENT_ID`],
-    clientSecret: process.env[`OAUTH_${providerName.toUpperCase()}_CLIENT_SECRET`],
+    clientId: process.env[`OAUTH_${providerName.toUpperCase()}_CLIENT_ID`] ?? undefined,
+    clientSecret: process.env[`OAUTH_${providerName.toUpperCase()}_CLIENT_SECRET`] ?? undefined,
     scopes: process.env[`OAUTH_${providerName.toUpperCase()}_SCOPES`]?.split(',') || []
   }
 }
@@ -46,8 +41,6 @@ export default defineNuxtModule<ModuleOptions>({
         providers: envProviders
       },
       {
-        callbackPath: '/',
-        proxy: undefined,
         csrf: 'auto'
       } as TOAuthConfigInput
     )

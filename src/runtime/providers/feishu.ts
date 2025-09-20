@@ -1,4 +1,5 @@
-import { type IOAuthProvider, providerBasicTokenSchema } from '../base'
+import { createError } from 'h3'
+import { type IOAuthProvider, providerBasicTokenSchema } from '../cores'
 import { z } from 'zod'
 
 const providerTokenSchema = providerBasicTokenSchema.extend({
@@ -7,28 +8,39 @@ const providerTokenSchema = providerBasicTokenSchema.extend({
 })
 
 export const feishuProvider: IOAuthProvider = {
-  authorizeEndpoint: 'https://accounts.feishu.cn/open-apis/authen/v1/authorize',
-  getAuthorizeQueryParams: ({ clientId, redirectUri, scopes, state }) => ({
-    client_id: clientId,
-    redirect_uri: redirectUri,
-    scope: scopes?.join(' '),
-    state: state,
-    response_type: 'code'
+  authorizeConstructor: ({ config: { clientId, scopes }, redirectUri, state }) => ({
+    endpoint: 'https://accounts.feishu.cn/open-apis/authen/v1/authorize',
+    params: {
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      scope: scopes?.join(' '),
+      state: state
+    }
   }),
-  getToken: async (fetchClient, props) => {
-    const res = await fetchClient('https://open.feishu.cn/open-apis/authen/v2/oauth/token', {
+  getToken: async ({ config: { clientId, clientSecret }, code, redirectUri }, fetchOptions) => {
+    return await $fetch('https://open.feishu.cn/open-apis/authen/v2/oauth/token', {
       method: 'POST',
       body: JSON.stringify({
-        code: props.code,
-        redirect_uri: props.redirectUri,
+        code: code,
+        redirect_uri: redirectUri,
         grant_type: 'authorization_code',
-        client_id: props.clientId,
-        client_secret: props.clientSecret
+        client_id: clientId,
+        client_secret: clientSecret
       }),
       headers: {
         'Content-Type': 'application/json; charset=utf-8'
-      }
+      },
+      onResponseError: ({ response }) => {
+        throw createError({
+          statusCode: 400,
+          statusMessage: 'OAUTH_FETCH_TOKEN',
+          data: {
+            providerName: 'feishu',
+            responseData: response._data
+          }
+        })
+      },
+      ...fetchOptions
     })
-    return providerTokenSchema.parse(res)
   }
 }
