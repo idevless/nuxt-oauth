@@ -23,3 +23,37 @@ npm install @idevless/nuxt-oauth
 # yarn add @idevless/nuxt-oauth
 # pnpm add @idevless/nuxt-oauth
 ```
+
+# 使用示例
+
+```TypeScript
+# 在 server/routes/oauth/[provider].get.ts 文件中添加以下代码
+export default defineOAuthGatewayHandler({ providerNameFrom: 'route-param' })
+
+```
+
+```TypeScript
+# 在 server/routes/oauth/callback/[provider].get.ts 文件中添加以下代码
+export default defineOAuthCallbackHandler(async (event, { tokenData, providerName, state }) => {
+  console.log(tokenData, providerName, state)
+  return await sendRedirect(event, '/?status=success', 302)
+})
+```
+
+```TypeScript
+# 使用自定义错误页面捕获错误 app/error.vue 文件中添加以下代码
+<script setup lang="ts">
+import type { NuxtError } from '#app'
+
+const props = defineProps({
+  error: Object as () => NuxtError
+})
+</script>
+
+<template>
+  <div>
+    <h2>{{ error?.statusMessage }}</h2>
+    <p>{{ error?.data }}</p>
+  </div>
+</template>
+```
