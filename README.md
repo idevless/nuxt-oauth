@@ -24,7 +24,14 @@ npm install @idevless/nuxt-oauth
 # pnpm add @idevless/nuxt-oauth
 ```
 
-# 使用示例
+## 环境变量覆盖
+
+```shell
+NUXT_OAUTH_PROVIDERS_DISCORD_CLIENT_ID=1234567890
+NUXT_OAUTH_PROVIDERS_DISCORD_CLIENT_SECRET=1234567890
+```
+
+## 使用示例
 
 ```TypeScript
 # 在 server/routes/oauth/[provider].get.ts 文件中添加以下代码

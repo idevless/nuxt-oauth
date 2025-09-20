@@ -29,20 +29,12 @@ export default defineNuxtModule<ModuleOptions>({
   setup(_options, _nuxt) {
     const resolver = createResolver(import.meta.url)
     addServerImportsDir(resolver.resolve('./runtime/handlers'))
-    const envProviders = {} as Record<string, any>
-    for (const providerName of ['discord', 'feishu', 'github', 'google']) {
-      envProviders[providerName] = resolveProviderConfigFromEnvironmentVariables(providerName)
-    }
     _nuxt.options.runtimeConfig.oauth = defu(
-      _nuxt.options.runtimeConfig.oauth ?? {
-        providers: {}
-      },
-      {
-        providers: envProviders
-      },
-      {
-        csrf: 'auto'
-      } as TOAuthConfigInput
+      _nuxt.options.runtimeConfig.oauth ??
+        ({
+          providers: {},
+          csrf: 'auto'
+        } as TOAuthConfigInput)
     )
   }
 })
