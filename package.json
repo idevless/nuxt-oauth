@@ -1,6 +1,6 @@
 {
   "name": "@idevless/nuxt-oauth",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Nuxt OAuth",
   "repository": {
     "type": "git",
@@ -58,7 +58,6 @@
   },
   "dependencies": {
     "@nuxt/kit": "^4.1.1",
-    "undici": "^7.16.0",
     "zod": "^4.1.9"
   },
   "devDependencies": {
