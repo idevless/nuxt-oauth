@@ -8,12 +8,15 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
     oauth: {
-      proxy: 'http://localhost:10808',
       providers: {
         github: {
+          clientId: '1234567890',
+          clientSecret: '1234567890',
           scopes: ['user:email']
         },
         discord: {
+          clientId: '1234567890',
+          clientSecret: '1234567890',
           scopes: ['identify', 'email']
         }
       }

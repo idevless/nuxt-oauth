@@ -32,7 +32,12 @@ export default defineNuxtModule<ModuleOptions>({
     _nuxt.options.runtimeConfig.oauth = defu(
       _nuxt.options.runtimeConfig.oauth ??
         ({
-          providers: {},
+          providers: {
+            discord: resolveProviderConfigFromEnvironmentVariables('discord'),
+            feishu: resolveProviderConfigFromEnvironmentVariables('feishu'),
+            github: resolveProviderConfigFromEnvironmentVariables('github'),
+            google: resolveProviderConfigFromEnvironmentVariables('google')
+          },
           csrf: 'auto'
         } as TOAuthConfigInput)
     )

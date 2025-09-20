@@ -8,39 +8,25 @@ const providerTokenSchema = providerBasicTokenSchema.extend({
 })
 
 export const feishuProvider: IOAuthProvider = {
-  authorizeConstructor: ({ config: { clientId, scopes }, redirectUri, state }) => ({
-    endpoint: 'https://accounts.feishu.cn/open-apis/authen/v1/authorize',
-    params: {
-      client_id: clientId,
-      redirect_uri: redirectUri,
-      scope: scopes?.join(' '),
-      state: state
-    }
+  authorizeEndpoint: 'https://accounts.feishu.cn/open-apis/authen/v1/authorize',
+  fetchTokenEndpoint: 'https://open.feishu.cn/open-apis/authen/v2/oauth/token',
+  getAuthorizeParams: ({ config: { clientId, scopes }, redirectUri, state }) => ({
+    client_id: clientId,
+    redirect_uri: redirectUri,
+    scope: scopes?.join(' '),
+    state: state
   }),
-  getToken: async ({ config: { clientId, clientSecret }, code, redirectUri }, fetchOptions) => {
-    return await $fetch('https://open.feishu.cn/open-apis/authen/v2/oauth/token', {
-      method: 'POST',
-      body: JSON.stringify({
-        code: code,
-        redirect_uri: redirectUri,
-        grant_type: 'authorization_code',
-        client_id: clientId,
-        client_secret: clientSecret
-      }),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-      },
-      onResponseError: ({ response }) => {
-        throw createError({
-          statusCode: 400,
-          statusMessage: 'OAUTH_FETCH_TOKEN',
-          data: {
-            providerName: 'feishu',
-            responseData: response._data
-          }
-        })
-      },
-      ...fetchOptions
-    })
-  }
+  getFetchTokenOptions: ({ config: { clientId, clientSecret }, code, redirectUri }) => ({
+    method: 'POST',
+    body: JSON.stringify({
+      code: code,
+      redirect_uri: redirectUri,
+      grant_type: 'authorization_code',
+      client_id: clientId,
+      client_secret: clientSecret
+    }),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8'
+    }
+  })
 }

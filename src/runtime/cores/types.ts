@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { oauthConfigSchema, providerConfigSchema, providerBasicTokenSchema } from './schemas'
-
+import type { NitroFetchOptions } from 'nitropack'
 export type Promisable<T> = T | Promise<T>
 
 export type TOAuthConfig = z.infer<typeof oauthConfigSchema>
@@ -13,17 +13,16 @@ export type TProviderBasicToken = z.infer<typeof providerBasicTokenSchema>
 export type TProviderBasicTokenInput = Partial<z.input<typeof providerBasicTokenSchema>>
 
 export interface IOAuthProvider<TToken = TProviderBasicToken> {
-  authorizeConstructor?: (props: {
+  authorizeEndpoint?: string
+  getAuthorizeParams?: (props: {
     config: Omit<TProviderConfig, 'clientSecret'>
     redirectUri: string
     state?: string
-  }) => { endpoint: string; params: Record<string, string | undefined> }
-  getToken: (
-    props: {
-      config: TProviderConfig
-      code: string
-      redirectUri: string
-    },
-    fetchOptions?: Record<string, any>
-  ) => Promisable<TToken>
+  }) => Record<string, string | undefined>
+  fetchTokenEndpoint?: string
+  getFetchTokenOptions?: (props: {
+    config: TProviderConfig
+    code: string
+    redirectUri: string
+  }) => NitroFetchOptions<'POST'>
 }
