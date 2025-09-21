@@ -1,1 +1,3 @@
-export default defineOAuthGatewayHandler({ providerNameFrom: 'route-param' })
+export default defineEventHandler(async (event) => {
+  return await sendRedirect(event, useOAuthAuthorizeURL(event))
+})
