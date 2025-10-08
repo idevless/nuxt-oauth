@@ -1,4 +1,4 @@
-import { type H3Event, getQuery, getCookie } from 'h3'
+import { type H3Event, getQuery, getCookie, deleteCookie } from 'h3'
 import {
   type TProviderNames,
   useOAuthProviderTokenDataSchema,
@@ -22,6 +22,7 @@ export async function useOAuthTokenData<T extends TProviderNames>(event: H3Event
   if (state !== getCookie(event, 'oauth_state')) {
     throwOAuthError(event, 'CALLBACK_STATE_MISMATCH')
   }
+  deleteCookie(event, 'oauth_state')
   const { name: _, ...config } = useOAuthProviderEventContext(event)
   const res = await $fetch(fetchTokenEndpoint, {
     dispatcher: event?.context?.proxyAgent,
