@@ -1,6 +1,10 @@
 # Changelog
 
 
+## v1.0.20
+
+[compare changes](https://github.com/idevless/nuxt-oauth/compare/v1.0.19...v1.0.20)
+
 ## v1.0.19
 
 [compare changes](https://github.com/idevless/nuxt-oauth/compare/v1.0.18...v1.0.19)
