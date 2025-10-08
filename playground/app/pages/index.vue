@@ -4,13 +4,21 @@ const userInfo = useCookie('oauth_user_info')
 
 <template>
   <div class="space-x-4">
-    <a target="_parent" :href="`/oauth/feishu?callbackUrl=${encodeURIComponent('/success')}`"
+    <a
+      target="_parent"
+      :href="`/oauth/feishu?callbackUrl=${encodeURIComponent('/success')}`"
       >Feishu</a
     >
-    <a target="_parent" :href="`/oauth/github?callbackUrl=${encodeURIComponent('/success')}`"
+    <a
+      target="_parent"
+      :href="`/oauth/github?callbackUrl=${encodeURIComponent('/success')}`"
       >Github</a
     >
-    <a target="_parent" href="/oauth/discord">Discord</a>
+    <a
+      target="_parent"
+      href="/oauth/discord"
+      >Discord</a
+    >
   </div>
   <pre class="text-pretty bg-elevated">
     {{ userInfo }}

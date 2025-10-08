@@ -9,6 +9,8 @@ export type TOAuthErrorName =
   | 'TOKEN_PARSE_INVALID'
   | 'USER_INFO_FETCH_ERROR'
   | 'USER_INFO_PARSE_INVALID'
+  | 'CALLBACK_STATE_MISSING'
+  | 'CALLBACK_STATE_MISMATCH'
 
 export function throwOAuthError(event: H3Event, name: TOAuthErrorName, data?: Record<string, any>) {
   throw createError({
